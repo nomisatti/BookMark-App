@@ -17,7 +17,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addBookMark(url: String! , description: String! , title: String! , image: String!) : Bookmark
+    addBookMark(url: String! , description: String! , title: String! , image: String!) : Bookmark ,
+    removeBookMark (id:ID!) : Bookmark
   }
 `
 
@@ -41,7 +42,7 @@ const resolvers = {
         )
         return result.data.map(d => {
           return {
-            id: d.ts,
+            id: d.ref.id,
             url: d.data.url,
             title:d.data.title,
             image:d.data.image,
@@ -56,7 +57,7 @@ const resolvers = {
   },
   Mutation: {
     addBookMark : async(_,{url,description,title,image}) =>{
-      var client = new faunadb.Client({secret :process.env.FaunaDb_Admin_Secrect});
+      var client = new faunadb.Client({secret :"fnAD4q5aphACBNz-g5THUqfDssaaQKgr6SZ04Rec"});
       try{
         
         var result = await client.query(
@@ -79,8 +80,26 @@ const resolvers = {
         console.log('error' ,error)
       }
       console.log('Url : ' ,url , ' Descp :' , descprition)
+    } ,
+    removeBookMark : async (_ ,id) =>{
+      console.log('Id inside Bookmark :' , id)
+      var client = new faunadb.Client({secret :"fnAD4q5aphACBNz-g5THUqfDssaaQKgr6SZ04Rec"});
+      try{
+
+        var result = await client.query(
+          faunabQuery.Delete( faunabQuery.Ref(faunabQuery.Collection('BookmarkLinks') , id.id)))
+        console.log("Document Deleted : " , result.ref.id)
+        return result.ref.data
+      }
+      
+      catch (error) {
+        console.log('Id inside Bookmark :' , id)
+        console.log('error ' , error)
+      }
     }
   }
+
+
 
 }
 

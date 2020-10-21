@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import Header from '../components/Header'
-import { Card, Container, Row, Col , Spinner } from 'react-bootstrap';
+import { Card, Container, Row, Col , Spinner, Button } from 'react-bootstrap';
 import { useQuery, useMutation } from '@apollo/client'
 import gql from 'graphql-tag'
 import { Link } from "gatsby";
@@ -25,7 +25,15 @@ const ADD_BOOKMARK = gql`
       url
     }
   }
-`
+`;
+
+const REMOVE_BOOKMARK = gql `
+  mutation removeBookMark ($id : ID!){
+    removeBookMark(id : $id) {
+      id
+    }
+  }
+`;
 
 export default function Home() {
 
@@ -35,6 +43,7 @@ export default function Home() {
   const [image, setImage] = useState()
   const { loading, error, data } = useQuery(BOOKMARK_QUERY)
   const [bookmark] = useMutation(ADD_BOOKMARK);
+  const [removeBookmark] =  useMutation(REMOVE_BOOKMARK)
   let addBookMark = () => {
     bookmark({
       variables: {
@@ -46,6 +55,14 @@ export default function Home() {
       refetchQueries: [{ query: BOOKMARK_QUERY }]
     })
     console.log('url : ', url, ' descp :', description)
+  }
+  let removeBookMark = (e) => {
+    removeBookmark({
+      variables:{
+        id: e
+      },
+      refetchQueries: [{ query: BOOKMARK_QUERY }]
+    })
   }
   if (loading)
     return <Spinner  animation="border" role="status">
@@ -73,7 +90,7 @@ export default function Home() {
                     {d.description}
                   </Card.Text>
                   <Link to={d.url}  target="_blank"  className="btn btn-primary">Read More</Link>
-                  
+                  <Button onClick={(e) => removeBookMark(d.id)} variant="danger" >Remove Bookmark</Button>
                 </Card.Body>
               </Card>
 
