@@ -1,0 +1,23 @@
+.spinner-border {
+    margin:20% 50% !important;
+}
+.container {
+    margin-top:5%;
+}
+.card-img-top {
+    height: 250px !important;
+}
+.card-title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+.card-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5; /* number of lines to show */
+    -webkit-box-orient: vertical;
+ }
