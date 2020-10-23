@@ -5,7 +5,6 @@ const logo = require('../images/logo.png') ;
 export default (props) => {
 
     const [show, setShow] = useState(false);
-    console.log('Logo : ' , logo.data)
     const handleClose = (e) => {
         if (e.target.name === "submit") {
             props.addBookMark()
@@ -39,7 +38,7 @@ export default (props) => {
                    <br />
                    <InputGroup size="mb-3">
                       
-                      <FormControl placeholder='Enter Url'onChange={(e) => { props.setUrl(e.target.value) }} aria-label="medium" aria-describedby="inputGroup-sizing-sm" />
+                      <FormControl placeholder='Enter Url' onChange={(e) => { props.setUrl(e.target.value) }} aria-label="medium" aria-describedby="inputGroup-sizing-sm" />
                   </InputGroup>
                   <br />
                    <InputGroup size="mb-3">

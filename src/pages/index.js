@@ -44,6 +44,7 @@ export default function Home() {
   const { loading, error, data } = useQuery(BOOKMARK_QUERY)
   const [bookmark] = useMutation(ADD_BOOKMARK);
   const [removeBookmark] =  useMutation(REMOVE_BOOKMARK)
+
   let addBookMark = () => {
     bookmark({
       variables: {
@@ -54,15 +55,18 @@ export default function Home() {
       },
       refetchQueries: [{ query: BOOKMARK_QUERY }]
     })
-    console.log('url : ', url, ' descp :', description)
+    alert('Bookmark added successfully')
   }
   let removeBookMark = (e) => {
+    if (window.confirm("Are you sure ? You want to remove this bookmark")) {
     removeBookmark({
       variables:{
         id: e
       },
       refetchQueries: [{ query: BOOKMARK_QUERY }]
     })
+    alert('Bookmark removed successfully !')
+  }
   }
   if (loading)
     return <Spinner  animation="border" role="status">
@@ -77,7 +81,6 @@ export default function Home() {
 <div>
   
     <Header setUrl={setUrl} setDescp={setDescp} setTitle={setTitle} setImage={setImage} addBookMark={addBookMark}/>
-   
         {data ?
           <Container> <Row>{data.bookmark.map((d => (
 
